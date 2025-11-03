@@ -1,0 +1,21 @@
+
+/run/numberOfThreads 8
+/run/initialize
+
+
+ 
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+ 
+ 
+ 
+ 
+ 
+ 
+#/vis/open OGL
+#/vis/viewer/set/autoRefresh true
+#/vis/drawVolume
+#/vis/scene/add/trajectories smooth
+#/vis/scene/endOfEventAction accumulate
