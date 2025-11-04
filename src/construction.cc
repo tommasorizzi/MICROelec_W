@@ -19,6 +19,8 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 
     // define world volume - can either use G4_Galactic or the vacuum parameters
     //G4Material *worldMat = nist->FindOrBuildMaterial("G4_Galactic");
+    
+    
     // Define world volume with a material named "Vacuum"
     G4Material* worldMat = new G4Material("Vacuum", 1., 1.01 * g / mole, 1.e-25 * g / cm3,
                                           kStateGas, 0.1 * kelvin, 1.e-19 * pascal);
@@ -30,6 +32,8 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     
     // define tungsten material
     G4Material* tungsten = nist->FindOrBuildMaterial("G4_W");
+    
+    //define target volumet 
     G4double particleRadius = 0.15 * micrometer;  // Radius of tungsten particle
     G4Sphere* solidTungsten = new G4Sphere("Target", 0.0, particleRadius,
                                            0.0 * deg, 360.0 * deg, 0.0 * deg, 180.0 * deg);
@@ -39,7 +43,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
                         logicWorld, false, 1); 
     
 
-    // define detector 
+    // define detector volume
     G4double innerRadius = 0.2 * micrometer; // Slightly larger than tungsten target
     G4double outerRadius = 0.25 * micrometer; // Detector fully encloses tungsten
     G4double startAngle = 0. * deg;

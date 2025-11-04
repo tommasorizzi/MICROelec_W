@@ -23,11 +23,19 @@
 
 
 int main(int argc, char** argv)
-{// G4long fixedSeed = 123456789; 
-//  G4Random::setTheSeed(fixedSeed);
+{
 
-//   G4cout << "Initial Random Seed: "
-//   << G4Random::getTheSeed() << G4endl;
+////////////////////////////////////////////
+////////////////////////////////////////////
+////TEST for SEEDING with RANDON number/////
+////////////////////////////////////////////
+//
+// G4long fixedSeed = 123456789; 
+// G4Random::setTheSeed(fixedSeed);
+
+// G4cout << "Initial Random Seed: "
+// << G4Random::getTheSeed() << G4endl;
+
 
   G4UIExecutive* ui = nullptr;
 
@@ -46,9 +54,7 @@ int main(int argc, char** argv)
     runManager->SetUserInitialization(new MyPhysicsList());
   }
 
-  // MyPhysicsList* physicsList = new MyPhysicsList(); //Swap between MicroELEC and OPT4
-  // MicroElecPhysics* physicsList = new MicroElecPhysics(); //Swap between MicroELEC and OPT4
-  // runManager->SetUserInitialization(physicsList);
+ 
   runManager->SetUserInitialization(new MyActionInitialization());
 
   G4VisManager* visManager = new G4VisExecutive();
@@ -63,7 +69,7 @@ int main(int argc, char** argv)
 
     // === Batch execution of all macros from macro_list.txt ===
     // Here you must change the path with the correct name of the macros you have generated i.e macros150 corresponds to 150nm dust
-    std::ifstream macroList("F:\\DUST_NEW\\code\\build\\Release\\macros150_surface\\macro_list.txt");
+    std::ifstream macroList("macros150_surface\\macro_list.txt");
     if (!macroList.is_open()) {
       G4cerr << "Error: Could not open macros/macro_list.txt" << G4endl;
       return 1;

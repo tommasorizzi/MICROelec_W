@@ -41,7 +41,12 @@
 
 MyPhysicsList::MyPhysicsList()
 {
- //RegisterPhysics(new G4EmStandardPhysicsSS());
+  
+  /////// SINGLE SCATTERING PHYSICS LIST //////  
+  //RegisterPhysics(new G4EmStandardPhysicsSS());
+  //
+  /////// GEANT4  OPT4 PHYSICS LIST     ///////
+  //
   RegisterPhysics(new G4EmStandardPhysics_option4());
 
 
@@ -67,6 +72,7 @@ MyPhysicsList::~MyPhysicsList() {}
 
 void MyPhysicsList::SetCuts()
 {
+  ////// set cut off for secondaries particle in space / energy ////// 
   isInSpace = false;
 
   if (isInSpace == true) {  // To set cut value equal for all particle
