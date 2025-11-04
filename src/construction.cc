@@ -110,4 +110,48 @@ void MyDetectorConstruction::ConstructSDandField()
     if (logicDetector) {
       logicDetector->SetSensitiveDetector(sensDet);
     }
+
+
+    fieldValuex= (-2.74)*tesla;
+    fieldValuey= (-2.74)*tesla;
+    fieldValuez= (-2.74)*tesla;
+
+    magField =new G4UniformMagField(G4ThreeVector(fieldValuex, fieldValuey, fieldValuez));
+
+
+    fieldMgr  = G4TransportationManager::GetTransportationManager()->GetFieldManager();
+
+    fieldMgr->SetDetectorField(magField); //create the field in all volume
+
+    fieldMgr->CreateChordFinder(magField);
+
+    // // For controling the accurancy
+
+   G4double fDesiredEpsilonMin = 1.0e-06; //min value for smallest step
+   fieldMgr -> SetMinimumEpsilonStep( fDesiredEpsilonMin ) ;
+   G4double fDesiredEpsilonMax = 1.0e-4; //max value for biggest step
+   fieldMgr -> SetMaximumEpsilonStep( fDesiredEpsilonMax ) ;
+   G4double fStep = 0.5e-3*mm;
+   fieldMgr -> SetDeltaOneStep(fStep);
+
+   //TO SPECIFY PARAMETRS FOR INTEGRATION
+   G4Mag_UsualEqRhs* fEquation;
+   fEquation = new G4Mag_UsualEqRhs(magField);
+
+   //Choose the stepper
+   //fStepper = new G4ClassicalRK4( fEquation );
+   //fStepper = new G4NystromRK4( fEquation ); //for lower computational cost at the same high order
+   //OTHER OPTIONS
+   //fStepper = new G4HelixSimpleRunge( fEquation );
+   //fStepper = new G4HelixExplicitEuler( fEquation );
+   fStepper = new G4ExactHelixStepper( fEquation );
+   //fStepper = new G4HelixMixedStepper( fEquation );
+
+   G4double fMinStep = 1.0e-5*mm;
+   fChordFinder = new G4ChordFinder(magField, fMinStep, fStepper);
+   fieldMgr -> SetChordFinder(fChordFinder);
+
+   G4double deltaChord = 0.00001*mm;
+   fieldMgr -> GetChordFinder()->SetDeltaChord(deltaChord);
+
 }

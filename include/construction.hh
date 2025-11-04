@@ -10,6 +10,13 @@
 #include "G4SystemOfUnits.hh"
 
 #include "detector.hh"
+#include "G4MagneticField.hh"
+#include "G4UniformMagField.hh"
+#include "G4MagIntegratorStepper.hh"
+#include "G4ChordFinder.hh"
+#include "G4GlobalMagFieldMessenger.hh"
+
+class G4UserLimits;
 
 class MyDetectorConstruction : public G4VUserDetectorConstruction
 {
@@ -24,6 +31,13 @@ private:
     G4LogicalVolume* logicDetector;
     virtual void ConstructSDandField();
 
+    G4double fieldValuex,fieldValuey,fieldValuez;
+
+    G4UserLimits* fStepLimit = nullptr;
+    G4FieldManager* fieldMgr = nullptr;
+    G4MagIntegratorStepper*  fStepper = nullptr;
+    G4ChordFinder* fChordFinder = nullptr;
+    G4UniformMagField* magField = nullptr;    
 
 };
 
