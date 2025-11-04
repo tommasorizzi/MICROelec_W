@@ -55,7 +55,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
                                           kStateGas, 0.1 * kelvin, 1.e-19 * pascal);
 
     // world volume - the size should be large enough to contain the target and detector
-    G4Box *solidWorld = new G4Box("solidWorld", 25 * micrometer, 25 * micrometer, 25 * micrometer);
+    G4Box *solidWorld = new G4Box("solidWorld", 75 * micrometer, 75 * micrometer, 75 * micrometer);
     G4LogicalVolume *logicWorld = new G4LogicalVolume(solidWorld, worldMat, "logicWorld");
     G4VPhysicalVolume *physWorld = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicWorld, "physWorld", 0, false, 0);
     
@@ -63,7 +63,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     G4Material* tungsten = nist->FindOrBuildMaterial("G4_W");
     
     //define target volumet 
-    G4double particleRadius = 0.15 * micrometer;  // Radius of tungsten particle
+    G4double particleRadius = 0.45 * micrometer;  // Radius of tungsten particle
     G4Sphere* solidTungsten = new G4Sphere("Target", 0.0, particleRadius,
                                            0.0 * deg, 360.0 * deg, 0.0 * deg, 180.0 * deg);
     logicTungsten = new G4LogicalVolume(solidTungsten, tungsten, "Target"); 
@@ -73,8 +73,9 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     
 
     // define detector volume
-    G4double innerRadius = 0.2 * micrometer; // Slightly larger than tungsten target
-    G4double outerRadius = 0.25 * micrometer; // Detector fully encloses tungsten
+    // in case of B field -_> it needs to be at least target + max Larmor radius (65 um for 7T and 18 KeV)
+    G4double innerRadius = (65 * micrometer) + particleRadius; // Slightly larger than tungsten target
+    G4double outerRadius = 1*micrometer+innerRadius; // Detector fully encloses tungsten
     G4double startAngle = 0. * deg;
     G4double spanningAngle = 360. * deg;
     G4double minTheta = 0. * deg;
@@ -112,9 +113,9 @@ void MyDetectorConstruction::ConstructSDandField()
     }
 
 
-    fieldValuex= (-2.74)*tesla;
-    fieldValuey= (-2.74)*tesla;
-    fieldValuez= (-2.74)*tesla;
+    fieldValuex= (0)*tesla;
+    fieldValuey= (7)*tesla;
+    fieldValuez= (0)*tesla;
 
     magField =new G4UniformMagField(G4ThreeVector(fieldValuex, fieldValuey, fieldValuez));
 
@@ -125,13 +126,15 @@ void MyDetectorConstruction::ConstructSDandField()
 
     fieldMgr->CreateChordFinder(magField);
 
+    logicDetector->SetFieldManager(nullptr, false);
+
     // // For controling the accurancy
 
-   G4double fDesiredEpsilonMin = 1.0e-06; //min value for smallest step
+   G4double fDesiredEpsilonMin = 1.0e-10; //min value for smallest step
    fieldMgr -> SetMinimumEpsilonStep( fDesiredEpsilonMin ) ;
-   G4double fDesiredEpsilonMax = 1.0e-4; //max value for biggest step
+   G4double fDesiredEpsilonMax = 1.0e-8; //max value for biggest step
    fieldMgr -> SetMaximumEpsilonStep( fDesiredEpsilonMax ) ;
-   G4double fStep = 0.5e-3*mm;
+   G4double fStep = 0.1e-3*mm;
    fieldMgr -> SetDeltaOneStep(fStep);
 
    //TO SPECIFY PARAMETRS FOR INTEGRATION
