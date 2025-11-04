@@ -5,6 +5,35 @@
 #include "G4Sphere.hh"
 
 
+///////// for B field implementation ///////
+
+#include "G4GlobalMagFieldMessenger.hh"
+#include "G4UniformMagField.hh"
+#include "G4MagneticField.hh"
+#include "G4AutoDelete.hh"
+#include "G4SDManager.hh"
+#include "G4FieldManager.hh"
+#include "globals.hh"
+#include "G4UserLimits.hh"
+#include "G4TransportationManager.hh"
+#include "G4SimpleHeum.hh"
+#include "G4Navigator.hh"
+#include "G4PropagatorInField.hh"
+#include "G4Mag_UsualEqRhs.hh"
+#include "G4HelixImplicitEuler.hh"
+#include "G4MagIntegratorStepper.hh"
+#include "G4HelixSimpleRunge.hh"
+#include "G4HelixExplicitEuler.hh"
+#include "G4ExactHelixStepper.hh"
+#include "G4HelixMixedStepper.hh"
+#include "G4ClassicalRK4.hh"
+#include "G4EllipticalTube.hh"
+#include "G4Ellipsoid.hh"
+#include "G4GlobalMagFieldMessenger.hh"
+
+
+
+
 
 MyDetectorConstruction::MyDetectorConstruction()
   : logicTungsten(nullptr), logicDetector(nullptr)  
