@@ -14,8 +14,8 @@
  
  
  
-/vis/open OGL
-/vis/viewer/set/autoRefresh true
-/vis/drawVolume
-/vis/scene/add/trajectories smooth
-/vis/scene/endOfEventAction accumulate
+#/vis/open OGL
+#/vis/viewer/set/autoRefresh true
+#/vis/drawVolume
+#/vis/scene/add/trajectories smooth
+#/vis/scene/endOfEventAction accumulate
