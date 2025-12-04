@@ -1,4 +1,0 @@
-/home/isernn/MICROelec_W/build/CMakeFiles/dustparticle.dir
-/home/isernn/MICROelec_W/build/CMakeFiles/DustparticleSim.dir
-/home/isernn/MICROelec_W/build/CMakeFiles/edit_cache.dir
-/home/isernn/MICROelec_W/build/CMakeFiles/rebuild_cache.dir
