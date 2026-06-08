@@ -1,0 +1,6 @@
+/gps/particle e-
+/gps/pos/centre 0.00 0.00 199.99 micrometer
+/gps/direction 0.321394 0.556670 0.766044
+/gps/ene/mono 5000 eV
+/run/setRunName E5.0keV_z0.01um_theta40_phi60
+/run/beamOn 100000

@@ -62,7 +62,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     
     //define target volume
     G4double lengthWall = 2 * mm;
-    G4double widthWall = 0.5 * mm;
+    G4double widthWall = 2 * mm;
     G4double depthWall = 0.2 * mm;
     G4Box* solidTungsten = new G4Box("Target", lengthWall, widthWall, depthWall); 
     
@@ -73,10 +73,10 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     
 
     // define detector volume
-    G4double detGap = 65 * micrometer;
+    G4double detGap = 130 * micrometer;
     
     G4double lengthDetector = 2.5 * mm;
-    G4double widthDetector = 1 * mm;
+    G4double widthDetector = 2.5 * mm;
     G4double depthDetector = 10 * micrometer;
     
     G4double detZ = depthWall + detGap + depthDetector;
@@ -117,8 +117,8 @@ void MyDetectorConstruction::ConstructSDandField()
 
 
     fieldValuex= (0)*tesla;
-    fieldValuey= (7)*tesla;
-    fieldValuez= (0)*tesla;
+    fieldValuey= (6.9904)*tesla;
+    fieldValuez= (0.3664)*tesla;
 
     magField =new G4UniformMagField(G4ThreeVector(fieldValuex, fieldValuey, fieldValuez));
 

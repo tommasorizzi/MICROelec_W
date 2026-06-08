@@ -69,7 +69,7 @@ int main(int argc, char** argv)
 
     // === Batch execution of all macros from macro_list.txt ===
     // Here you must change the path with the correct name of the macros you have generated i.e macros150 corresponds to 150nm dust
-    std::ifstream macroList("../MATLAB_scripts/macros150_surface/macro_list.txt");
+    std::ifstream macroList("../MATLAB_scripts/macros_0001/macro_list.txt");
     if (!macroList.is_open()) {
       G4cerr << "Error: Could not open macros/macro_list.txt" << G4endl;
       return 1;
@@ -91,6 +91,7 @@ int main(int argc, char** argv)
   }
   else
   {
+    UImanager->ApplyCommand("/control/execute vis.mac");
     // Allow command-line execution of a single macro
     G4String command = "/control/execute ";
     G4String fileName = argv[1];

@@ -1,0 +1,8 @@
+/proj/memos_u/users/x_kevma/run_with_B_phi/MICROelec_W/MATLAB_scripts/macros_expol1/E5.0keV_z0.005um_theta160_phi0.mac
+/proj/memos_u/users/x_kevma/run_with_B_phi/MICROelec_W/MATLAB_scripts/macros_expol1/E5.0keV_z0.005um_theta160_phi30.mac
+/proj/memos_u/users/x_kevma/run_with_B_phi/MICROelec_W/MATLAB_scripts/macros_expol1/E5.0keV_z0.005um_theta160_phi60.mac
+/proj/memos_u/users/x_kevma/run_with_B_phi/MICROelec_W/MATLAB_scripts/macros_expol1/E5.0keV_z0.005um_theta160_phi90.mac
+/proj/memos_u/users/x_kevma/run_with_B_phi/MICROelec_W/MATLAB_scripts/macros_expol1/E5.0keV_z0.005um_theta180_phi0.mac
+/proj/memos_u/users/x_kevma/run_with_B_phi/MICROelec_W/MATLAB_scripts/macros_expol1/E5.0keV_z0.005um_theta180_phi30.mac
+/proj/memos_u/users/x_kevma/run_with_B_phi/MICROelec_W/MATLAB_scripts/macros_expol1/E5.0keV_z0.005um_theta180_phi60.mac
+/proj/memos_u/users/x_kevma/run_with_B_phi/MICROelec_W/MATLAB_scripts/macros_expol1/E5.0keV_z0.005um_theta180_phi90.mac

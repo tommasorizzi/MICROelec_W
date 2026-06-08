@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
-project(DustparticleSim)
+project(WallSim)
 
 
 # Find Geant4 with UI and visualization enabled
@@ -19,10 +19,10 @@ file(GLOB MACRO_FILES "*.mac")
 file(COPY ${MACRO_FILES} DESTINATION ${PROJECT_BINARY_DIR})
 
 # Define executable
-add_executable(dustparticle sim.cc ${sources} ${headers})
+add_executable(wallparticle sim.cc ${sources} ${headers})
 
 # Link necessary libraries
-target_link_libraries(dustparticle ${Geant4_LIBRARIES})
+target_link_libraries(wallparticle ${Geant4_LIBRARIES})
 
 # Custom build target
-add_custom_target(DustparticleSim DEPENDS dustparticle)
+add_custom_target(WallSim DEPENDS wallparticle)
