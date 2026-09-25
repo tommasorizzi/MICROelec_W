@@ -26,13 +26,15 @@ class MyRunAction : public G4UserRunAction
     virtual void BeginOfRunAction(const G4Run*);
     virtual void EndOfRunAction(const G4Run*);
 
-    void RecordHit(G4double energy);  // Function to store hits
+    void RecordHit(G4double energy, G4int type);
+    
     static void SetRunName(G4String name);
     static G4String GetRunName();
 
   private:
     std::ofstream outputFile;
     std::ofstream hitFile;  // File stream for writing data
+
     static G4String runName;
 };
 

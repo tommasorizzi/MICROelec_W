@@ -10,6 +10,9 @@ class MySensitiveDetector : public G4VSensitiveDetector
     ~MySensitiveDetector();
 
     virtual G4bool ProcessHits(G4Step*, G4TouchableHistory*);
+
+    private:
+	G4String fName;		// Store the detector name
 };
 
 #endif

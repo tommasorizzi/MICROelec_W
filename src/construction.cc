@@ -53,7 +53,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
                                           kStateGas, 0.1 * kelvin, 1.e-19 * pascal);
 
     // world volume - the size should be large enough to contain the target and detector
-    G4Box *solidWorld = new G4Box("solidWorld", 10 * mm, 10 * mm, 10 * mm);
+    G4Box *solidWorld = new G4Box("solidWorld", 80 * mm, 80 * mm, 80 * mm);
     G4LogicalVolume *logicWorld = new G4LogicalVolume(solidWorld, worldMat, "logicWorld");
     G4VPhysicalVolume *physWorld = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicWorld, "physWorld", 0, false, 0);
     
@@ -61,8 +61,8 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     G4Material* tungsten = nist->FindOrBuildMaterial("G4_W");
     
     //define target volume
-    G4double lengthWall = 2 * mm;
-    G4double widthWall = 0.5 * mm;
+    G4double lengthWall = 6 * mm;
+    G4double widthWall = 6 * mm;
     G4double depthWall = 0.2 * mm;
     G4Box* solidTungsten = new G4Box("Target", lengthWall, widthWall, depthWall); 
     
@@ -73,20 +73,27 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     
 
     // define detector volume
-    G4double detGap = 65 * micrometer;
+    G4double detGap = 130 * micrometer;
     
-    G4double lengthDetector = 2.5 * mm;
-    G4double widthDetector = 1 * mm;
+    G4double lengthDetector = 9 * mm;
+    G4double widthDetector = 9 * mm;
     G4double depthDetector = 10 * micrometer;
     
     G4double detZ = depthWall + detGap + depthDetector;
     
-	
+   G4Box* solidDetector = new G4Box("solidDetector", lengthDetector, widthDetector, depthDetector);
+   logicDetector = new G4LogicalVolume(solidDetector, worldMat, "logicDetector");
+   G4VPhysicalVolume* physDetector = new G4PVPlacement(0, G4ThreeVector(0, 0, detZ), logicDetector, "physDetector", logicWorld, false, 2);
 
+    // Define Redeposition Detector
+    G4double topDetGap = 2 * micrometer;
 
-	G4Box* solidDetector = new G4Box("solidDetector", lengthDetector, widthDetector, depthDetector);
-	logicDetector = new G4LogicalVolume(solidDetector, worldMat, "logicDetector");
-	G4VPhysicalVolume* physDetector = new G4PVPlacement(0, G4ThreeVector(0, 0, detZ), logicDetector, "physDetector", logicWorld, false, 2);
+    G4double depthTopDetWall = 1 * micrometer;
+    G4double topDetZ = depthTopDetWall + topDetGap + depthWall;
+    
+    G4Box* topDetector = new G4Box("topDetector", lengthWall, widthWall, depthTopDetWall);
+    logicTopDetector =  new G4LogicalVolume(topDetector, worldMat, "logicTopDetector");
+    G4VPhysicalVolume* redepDetector = new G4PVPlacement(0, G4ThreeVector(0,0,topDetZ), logicTopDetector, "physTopDetector", logicWorld, false, 3);
 
 
 
@@ -110,24 +117,32 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 void MyDetectorConstruction::ConstructSDandField()
 {
     MySensitiveDetector* sensDet = new MySensitiveDetector("SensitiveDetector");
+    MySensitiveDetector* topSDet = new MySensitiveDetector("topDetector");
 
     if (logicDetector) {
       logicDetector->SetSensitiveDetector(sensDet);
     }
 
+    if (logicTopDetector) {
+	logicTopDetector->SetSensitiveDetector(topSDet); //Check
+    }
 
     fieldValuex= (0)*tesla;
-    fieldValuey= (7)*tesla;
-    fieldValuez= (0)*tesla;
+    fieldValuey= (6.9904)*tesla;
+    fieldValuez= (0.3664)*tesla;
 
     magField =new G4UniformMagField(G4ThreeVector(fieldValuex, fieldValuey, fieldValuez));
 
+    G4FieldManager* fieldMgr = G4TransportationManager::GetTransportationManager()->GetFieldManager();
 
-    fieldMgr  = G4TransportationManager::GetTransportationManager()->GetFieldManager();
 
     fieldMgr->SetDetectorField(magField); //create the field in all volume
 
     fieldMgr->CreateChordFinder(magField);
+
+
+    // G4FieldManager* zeroFieldMgr = new G4FieldManager((G4MagneticField*)nullptr);
+    // logicTungsten->SetFieldManager(zeroFieldMgr, true);
 
     logicDetector->SetFieldManager(nullptr, false);
 
@@ -153,11 +168,11 @@ void MyDetectorConstruction::ConstructSDandField()
    fStepper = new G4ExactHelixStepper( fEquation );
    //fStepper = new G4HelixMixedStepper( fEquation );
 
-   G4double fMinStep = 1.0e-5*mm;
+   G4double fMinStep = 1.0e-4*mm;
    fChordFinder = new G4ChordFinder(magField, fMinStep, fStepper);
    fieldMgr -> SetChordFinder(fChordFinder);
 
-   G4double deltaChord = 0.00001*mm;
+   G4double deltaChord = 1.0e-4*mm;
    fieldMgr -> GetChordFinder()->SetDeltaChord(deltaChord);
 
 }

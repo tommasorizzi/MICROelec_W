@@ -64,7 +64,6 @@ void MyRunAction::BeginOfRunAction(const G4Run* run)
 
     G4String steppingFileName = "output_stepping/" + nameTag + ".csv";
 
-
     analysisManager->SetDefaultFileType("csv");
     analysisManager->OpenFile(steppingFileName);
     analysisManager->CreateNtuple("data", "data");
@@ -76,6 +75,7 @@ void MyRunAction::BeginOfRunAction(const G4Run* run)
     analysisManager->CreateNtupleIColumn("isSEE");
     analysisManager->CreateNtupleIColumn("isBSE");
     analysisManager->CreateNtupleIColumn("isTEY");
+    analysisManager->CreateNtupleIColumn("isReturn");
     analysisManager->FinishNtuple();
 }
 
@@ -96,13 +96,13 @@ void MyRunAction::EndOfRunAction(const G4Run*)
     analysisManager->CloseFile();
 }
 
-void MyRunAction::RecordHit(G4double energy)
+void MyRunAction::RecordHit(G4double energy, G4int isReturn)
 {
     // Get the current event ID
     G4int eventID = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
 
     if (hitFile.is_open()) {
-        hitFile << energy / eV << "," << eventID << "\n";  // Save energy in eV with eventID
+        hitFile << energy / eV << "," << eventID << "," << isReturn << "\n";  // Save energy in eV with eventID
         hitFile.flush();
     } else {
         G4cerr << "ERROR: Attempted to write to a closed file!" << G4endl;

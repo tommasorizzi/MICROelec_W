@@ -64,6 +64,10 @@ void MySteppingAction::UserSteppingAction(const G4Step* step)
   
   G4StepPoint* preStepPoint = step->GetPreStepPoint();
   G4ThreeVector position = preStepPoint->GetPosition();
+
+  // Check momentum 
+  G4ThreeVector momentum = track->GetMomentumDirection();
+  G4int isReturn = 0;
   // Print results
   //G4cout << "--------------------------------" << G4endl;
   //G4cout << "Particle ID: " << particleID << G4endl;
@@ -85,9 +89,11 @@ void MySteppingAction::UserSteppingAction(const G4Step* step)
 
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
-
+  // Far Detector
   if (copyNumber == 2 && isFirstStep)
   {
+    isReturn = 0;
+
     analysisManager->FillNtupleDColumn(0, 0, kineticEnergy);
     analysisManager->FillNtupleIColumn(0, 1, particleID);
     analysisManager->FillNtupleIColumn(0, 2, eventID);
@@ -96,6 +102,25 @@ void MySteppingAction::UserSteppingAction(const G4Step* step)
     analysisManager->FillNtupleIColumn(0, 5, isSEE);
     analysisManager->FillNtupleIColumn(0, 6, isBSE);
     analysisManager->FillNtupleIColumn(0, 7, isTEY);
+    analysisManager->FillNtupleIColumn(0, 8, isReturn);
+    analysisManager->AddNtupleRow(0);
+    track->SetTrackStatus(fStopAndKill);
+  }
+
+  // Top Detector
+  else if (copyNumber == 3 && isFirstStep && momentum.z() < 0)
+  {
+    isReturn = 1;
+
+    analysisManager->FillNtupleDColumn(0, 0, kineticEnergy);
+    analysisManager->FillNtupleIColumn(0, 1, particleID);
+    analysisManager->FillNtupleIColumn(0, 2, eventID);
+    analysisManager->FillNtupleDColumn(0, 3, position[2]);
+    analysisManager->FillNtupleIColumn(0, 4, parentID);
+    analysisManager->FillNtupleIColumn(0, 5, isSEE);
+    analysisManager->FillNtupleIColumn(0, 6, isBSE);
+    analysisManager->FillNtupleIColumn(0, 7, isTEY);
+    analysisManager->FillNtupleIColumn(0, 8, isReturn);
     analysisManager->AddNtupleRow(0);
     track->SetTrackStatus(fStopAndKill);
   }

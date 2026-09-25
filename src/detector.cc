@@ -9,7 +9,8 @@
 
 #include "runaction.hh"
 
-MySensitiveDetector::MySensitiveDetector(G4String name) : G4VSensitiveDetector(name) {}
+MySensitiveDetector::MySensitiveDetector(G4String name)
+    : G4VSensitiveDetector(name), fName(name) {}
 
 MySensitiveDetector::~MySensitiveDetector() {}
 
@@ -17,27 +18,41 @@ G4bool MySensitiveDetector::ProcessHits(G4Step* aStep, G4TouchableHistory* /*ROh
 {
     // Get the track of the particle
     G4Track* track = aStep->GetTrack();
-    
+
     // Get the particle type
     G4String particleName = track->GetDefinition()->GetParticleName();
-    
+
     // Only count electrons
-    if (particleName == "e-") 
+    if (particleName == "e-")
     {
-        // Get the kinetic energy of the electron
+        // Get the kinetic energy and momentum
         G4double energy = track->GetKineticEnergy();
+        G4ThreeVector momentum = track->GetMomentumDirection();
 
         // Get the Run Action
-        MyRunAction* runAction = (MyRunAction*)G4RunManager::GetRunManager()->GetUserRunAction();
-        if (runAction) {
-            runAction->RecordHit(energy);  // Log the hit energy
+        MyRunAction* runAction =
+            (MyRunAction*)G4RunManager::GetRunManager()->GetUserRunAction();
+
+        // Top detector: redepositing electrons
+        if (fName == "topDetector")
+        {
+            // Only electrons coming BACK
+            if (momentum.z() < 0)
+            {
+                if (runAction) runAction->RecordHit(energy, 1);
+                track->SetTrackStatus(fStopAndKill);
+            }
         }
 
-        // Kill the electron to stop further tracking
-        track->SetTrackStatus(fStopAndKill);
+        // Original detector: escaping electrons
+        if (fName == "SensitiveDetector")
+        {
+            if (runAction) runAction->RecordHit(energy, 0);
+            track->SetTrackStatus(fStopAndKill);
 
-        // Debugging: Uncomment if you want to see output per hit
-        // G4cout << "Electron detected! Energy: " << energy / keV << " keV" << G4endl;
+            // Debugging: Uncomment to print each hit
+            // G4cout << "Electron detected! Energy: " << energy / keV << " keV" << G4endl;
+        }
     }
 
     return true;

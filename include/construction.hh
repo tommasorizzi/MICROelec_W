@@ -29,6 +29,7 @@ public:
 private:
     G4LogicalVolume* logicTungsten;
     G4LogicalVolume* logicDetector;
+    G4LogicalVolume* logicTopDetector;
     virtual void ConstructSDandField();
 
     G4double fieldValuex,fieldValuey,fieldValuez;
